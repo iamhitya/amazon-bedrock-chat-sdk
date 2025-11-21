@@ -18,37 +18,6 @@ var kernel = app.Services.GetRequiredService<Kernel>();
 
 var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
 
-ChatHistory history = [];
-
-while (true)
-{
-    Console.Write("You: ");
-    var userInput = Console.ReadLine();
-
-    if (string.IsNullOrWhiteSpace(userInput))
-    {
-        Console.WriteLine("Goodbye!");
-        break;
-    }
-
-    // Add user message to chat history
-    history.AddUserMessage(userInput);
-
-    Console.Write("AI: ");
-
-    // Get AI response
-    var response = await chatCompletionService.GetChatMessageContentAsync(
-        history,
-        kernel: kernel
-    );
-
-    // Add AI response to chat history
-    history.Add(response);
-
-    Console.WriteLine(response);
-    Console.WriteLine();
-}
-
 ChatHistory streamingHistory = [];
 
 while (true)
@@ -77,7 +46,6 @@ while (true)
     {
         Console.Write(chunk);
         fullResponse += chunk;
-        //await Task.Delay(100);
     }
 
     // Add AI response to streaming chat history
